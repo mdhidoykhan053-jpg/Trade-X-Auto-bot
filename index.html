@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>TradeX Auto BoT - Premium Overlay System</title>
+    <link rel="icon" type="image/png" href="https://i.ibb.co/7xfp9wPc/file-0000000034a882118c784129da56f6ed.png">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #06030d;
+            color: #ffffff;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .bg-glow {
+            position: absolute;
+            width: 320px;
+            height: 320px;
+            background: radial-gradient(circle, rgba(168, 85, 247, 0.35) 0%, rgba(0, 0, 0, 0) 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .app-card {
+            position: relative;
+            z-index: 10;
+            width: 90%;
+            max-width: 400px;
+            max-height: 95vh;
+            overflow-y: auto;
+            background: rgba(18, 10, 36, 0.96);
+            border: 1.5px solid #a855f7;
+            border-radius: 24px;
+            padding: 24px 20px;
+            box-shadow: 0 0 35px rgba(168, 85, 247, 0.4);
+            backdrop-filter: blur(15px);
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            text-align: center;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 7, 32, 0.6);
+            border-radius: 8px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #a855f7;
+            border-radius: 8px;
+        }
+
+        .bot-header-logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto;
+            border-radius: 50%;
+            border: 2px solid #00ff66;
+            box-shadow: 0 0 20px #00ff66;
+            background: radial-gradient(circle, #2e1065, #0f0720);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .bot-header-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .title-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .app-title {
+            font-size: 22px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            background: linear-gradient(120deg, #ffffff 0%, #c084fc 25%, #ffffff 50%, #a855f7 75%, #ffffff 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: purpleWhiteGlow 3s linear infinite;
+            text-shadow: 0 0 18px rgba(168, 85, 247, 0.6);
+        }
+
+        @keyframes purpleWhiteGlow {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+
+        .app-sub {
+            font-size: 10px;
+            color: #d8b4fe;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            font-weight: 600;
+            opacity: 0.9;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            text-align: left;
+        }
+
+        .input-label { 
+            font-size: 11px; 
+            color: #c084fc; 
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+
+        .key-input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid #a855f7;
+            background: #0f0720;
+            color: #00ff66;
+            text-align: center;
+            font-size: 15px;
+            font-weight: bold;
+            letter-spacing: 1.5px;
+            outline: none;
+            box-shadow: inset 0 0 10px rgba(168, 85, 247, 0.2);
+        }
+
+        .key-input:focus {
+            border-color: #00ff66;
+            box-shadow: inset 0 0 10px rgba(0, 255, 102, 0.3), 0 0 12px rgba(0, 255, 102, 0.2);
+        }
+
+        .btn-list {
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+            margin-top: 2px;
+        }
+
+        .btn-animated {
+            width: 100%;
+            padding: 12px;
+            border: 1.5px solid rgba(192, 132, 252, 0.6);
+            border-radius: 12px;
+            background: linear-gradient(120deg, #4c1d95 0%, #7e22ce 25%, #a855f7 50%, #7e22ce 75%, #4c1d95 100%);
+            background-size: 200% auto;
+            color: #ffffff;
+            font-weight: bold;
+            font-size: 13px;
+            cursor: pointer;
+            box-shadow: 0 0 18px rgba(168, 85, 247, 0.4);
+            animation: purpleWhiteGlow 3s linear infinite;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: transform 0.2s, background 0.2s;
+            box-sizing: border-box;
+        }
+
+        .btn-animated:active { transform: scale(0.98); }
+
+        .btn-active-bot {
+            background: linear-gradient(120deg, #065f46 0%, #059669 25%, #10b981 50%, #059669 75%, #065f46 100%) !important;
+            background-size: 200% auto !important;
+            border-color: rgba(16, 185, 129, 0.8) !important;
+            box-shadow: 0 0 22px rgba(16, 185, 129, 0.6) !important;
+        }
+
+        .btn-bookmark-code {
+            background: linear-gradient(120deg, #1e1b4b 0%, #312e81 50%, #4338ca 100%) !important;
+            border-color: rgba(129, 140, 248, 0.8) !important;
+            box-shadow: 0 0 20px rgba(67, 56, 202, 0.5) !important;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.88);
+            backdrop-filter: blur(8px);
+            z-index: 99999999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 14px;
+        }
+
+        .premium-modal {
+            width: 95%; max-width: 420px;
+            background: rgba(20, 10, 38, 0.99);
+            border: 1.5px solid #a855f7;
+            border-radius: 20px;
+            padding: 18px;
+            text-align: center;
+            box-shadow: 0 0 35px rgba(168, 85, 247, 0.6);
+            display: flex; flex-direction: column; gap: 12px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .btn-close-modal { 
+            background: rgba(255, 255, 255, 0.1); 
+            color: #ddd; 
+            border: 1px solid rgba(168, 85, 247, 0.4); 
+            border-radius: 10px; 
+            padding: 10px; 
+            font-size: 12px; 
+            cursor: pointer; 
+            font-weight: bold;
+        }
+
+        .floating-window {
+            position: fixed;
+            top: 100px;
+            left: 20px;
+            z-index: 999999;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            touch-action: none;
+            filter: drop-shadow(0 0 15px rgba(0, 255, 102, 0.45));
+            cursor: grab;
+        }
+
+        .floating-window:active { cursor: grabbing; }
+
+        .floating-logo-btn {
+            width: 68px;
+            height: 68px;
+            border-radius: 50%;
+            border: 3px solid #00ff66;
+            background: radial-gradient(circle, #2e1065, #0f0720);
+            box-shadow: 0 0 25px #00ff66, inset 0 0 12px #a855f7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            animation: pulseLogo 2s infinite ease-in-out;
+            overflow: hidden;
+            position: relative;
+        }
+
+        @keyframes pulseLogo {
+            0% { box-shadow: 0 0 15px #00ff66, inset 0 0 10px #a855f7; transform: scale(1); }
+            50% { box-shadow: 0 0 30px #00ff66, inset 0 0 15px #a855f7; transform: scale(1.05); }
+            100% { box-shadow: 0 0 15px #00ff66, inset 0 0 10px #a855f7; transform: scale(1); }
+        }
+
+        .floating-logo-btn img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .hide-control-btn {
+            margin-top: 4px;
+            background: rgba(220, 38, 38, 0.95);
+            color: white;
+            border: 1px solid #ff3366;
+            border-radius: 8px;
+            padding: 3px 8px;
+            font-size: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 0 8px rgba(220, 38, 38, 0.5);
+        }
+
+        .scan-overlay-screen {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: 999990; pointer-events: none; display: none; background: rgba(10, 4, 25, 0.5);
+        }
+        .scan-overlay-screen.active { display: block; }
+
+        .scan-laser-line {
+            position: absolute; width: 100%; height: 4px;
+            background: linear-gradient(90deg, transparent, #a855f7, #00ff66, #a855f7, transparent);
+            box-shadow: 0 0 18px #00ff66; animation: scanAnim 1.2s infinite alternate ease-in-out;
+        }
+        @keyframes scanAnim { 0% { top: 0%; } 100% { top: 100%; } }
+
+        .scan-hud-box {
+            position: absolute; bottom: 60px; left: 50%; transform: translateX(-50%);
+            background: rgba(15, 8, 28, 0.95); border: 1.5px solid #a855f7;
+            padding: 10px 22px; border-radius: 25px; color: #c084fc; font-size: 13px; font-weight: bold; box-shadow: 0 0 25px rgba(168, 85, 247, 0.7); text-align: center;
+        }
+
+        .result-toast-box {
+            position: fixed; top: 40%; left: 50%; transform: translate(-50%, -50%) scale(0.8);
+            z-index: 1000000; background: rgba(10, 4, 25, 0.96); border-radius: 20px;
+            padding: 20px 32px; text-align: center; display: none; flex-direction: column;
+            align-items: center; justify-content: center; gap: 6px; box-shadow: 0 0 40px rgba(0, 0, 0, 0.9);
+            opacity: 0; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); pointer-events: none;
+        }
+        .result-toast-box.show { display: flex; opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        .result-up { border: 2.5px solid #00ff66; box-shadow: 0 0 35px rgba(0, 255, 102, 0.6); }
+        .result-down { border: 2.5px solid #ff3366; box-shadow: 0 0 35px rgba(255, 51, 102, 0.6); }
+        .result-title { font-size: 11px; color: #d8b4fe; text-transform: uppercase; letter-spacing: 1px; }
+        .result-badge { font-size: 22px; font-weight: 900; }
+        .up-text { color: #00ff66; text-shadow: 0 0 10px rgba(0, 255, 102, 0.8); }
+        .down-text { color: #ff3366; text-shadow: 0 0 10px rgba(255, 51, 102, 0.8); }
+    </style>
+</head>
+<body>
+
+    <div class="bg-glow"></div>
+
+    <!-- Main Login & Settings Card -->
+    <div class="app-card" id="appMainCard">
+        <div class="bot-header-logo">
+            <img src="https://i.ibb.co/7xfp9wPc/file-0000000034a882118c784129da56f6ed.png" alt="TradeX Logo">
+        </div>
+        
+        <div class="title-container">
+            <div class="app-title">TradeX Auto BoT</div>
+            <div class="app-sub">Universal Automated Trading AI</div>
+        </div>
+
+        <div class="input-group">
+            <span class="input-label">UNIVERSAL ACCESS KEY</span>
+            <input type="password" id="accessKeyInput" class="key-input" placeholder="ENTER KEY">
+        </div>
+
+        <div class="btn-list">
+            <button class="btn-animated" id="btnVerify" type="button" onclick="verifyAccessKey()">VERIFY ACCESS KEY</button>
+
+            <button class="btn-animated btn-bookmark-code" id="btnBookmarkCode" type="button" style="display: none;" onclick="openBookmarkModal()">
+                ⭐ Chrome Bookmark Code (Quotex)
+            </button>
+
+            <a href="https://broker-qx.pro/sign-up/?lid=2408799" target="_blank" class="btn-animated">
+                👤 Create Account
+            </a>
+
+            <a href="https://t.me/+caxUKC4rS_8wNDA9" target="_blank" class="btn-animated">
+                📢 Join Telegram Channel
+            </a>
+        </div>
+    </div>
+
+    <!-- Wrong Key Admin Contact Modal -->
+    <div class="modal-overlay" id="wrongKeyModal">
+        <div class="premium-modal" style="border: 1.5px solid #ff3366; box-shadow: 0 0 30px rgba(255, 51, 102, 0.4);">
+            <div style="font-size: 32px;">🚫</div>
+            <div style="font-size: 16px; font-weight: bold; color: #ff3366;">Access Denied</div>
+            <div style="font-size: 12px; color: #e9d5ff; line-height: 1.4;" id="wrongKeyMessage">
+                আপনার পাসওয়ার্ডটি সঠিক নয়!<br>
+                সঠিক পাসওয়ার্ডের জন্য এডমিনের সঙ্গে সরাসরি যোগাযোগ করুন।
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 6px;">
+                <a href="https://wa.me/8801718355205" target="_blank" class="btn-animated" style="background: linear-gradient(120deg, #065f46 0%, #059669 50%, #065f46 100%);">💬 Contact on WhatsApp</a>
+                <a href="https://t.me/+caxUKC4rS_8wNDA9" target="_blank" class="btn-animated" style="background: linear-gradient(120deg, #0369a1 0%, #0284c7 50%, #0369a1 100%);">✈️ Join Telegram</a>
+            </div>
+            <button class="btn-close-modal" type="button" onclick="closeWrongKeyModal()">বন্ধ করুন</button>
+        </div>
+    </div>
+
+    <!-- Chrome Bookmarklet Modal (Shown after login) -->
+    <div class="modal-overlay" id="bookmarkModal">
+        <div class="premium-modal" style="border: 1.5px solid #a855f7; box-shadow: 0 0 35px rgba(168, 85, 247, 0.5);">
+            <div style="font-size: 28px;">⭐</div>
+            <div style="font-size: 16px; font-weight: bold; color: #00ff66;">Chrome Bookmarklet Code</div>
+            <div style="font-size: 12px; color: #e9d5ff; line-height: 1.4; text-align: left;">
+                Quotex বা যেকোনো ব্রাউজারে সরাসরি ট্রেডিং চার্টের ওপরে এই ভাসমান বট চালু করতে নিচের বুকমার্ক কোডটি কপি করে ক্রোম ব্রাউজারে বুকমার্ক হিসেবে সেভ করুন:
+            </div>
+
+            <textarea id="bookmarkCodeText" readonly style="width: 100%; height: 75px; background: #090317; border: 1px solid #a855f7; border-radius: 8px; color: #00ff66; font-size: 10px; font-family: monospace; padding: 8px; resize: none; outline: none;"></textarea>
+
+            <button type="button" class="btn-animated btn-active-bot" id="btnCopyBookmark" onclick="copyBookmarkletCode()">
+                📋 Copy Bookmarklet Code
+            </button>
+
+            <div style="font-size: 10px; color: #c084fc; text-align: left; line-height: 1.4; background: rgba(255,255,255,0.05); padding: 8px; border-radius: 8px;">
+                <strong>📌 ব্যবহারের নিয়ম:</strong><br>
+                ১. <strong>Copy Bookmarklet Code</strong> এ চাপ দিন।<br>
+                ২. Chrome-এ গিয়ে যেকোনো পেজ <strong>Bookmark</strong> করুন এবং Edit Bookmark-এ গিয়ে <strong>URL</strong> বক্সে আগের লিংক কেটে এই কোডটি পেস্ট করুন। নাম দিন <strong>TradeX</strong>।<br>
+                ৩. এবার <strong>Quotex</strong> ওপেন করে Chrome Search বারে <strong>TradeX</strong> লিখে সার্চ করলেই বুকমার্কটি আসবে, চাপ দিলে কোটেক্সে সরাসরি বট চালু হয়ে যাবে!
+            </div>
+
+            <button class="btn-close-modal" type="button" onclick="closeBookmarkModal()">বন্ধ করুন</button>
+        </div>
+    </div>
+
+    <!-- Floating Overlay Window -->
+    <div class="floating-window" id="floatingBotWindow">
+        <div class="floating-logo-btn" id="draggableLogo">
+            <img src="https://i.ibb.co/7xfp9wPc/file-0000000034a882118c784129da56f6ed.png" alt="TradeX Floating Logo">
+        </div>
+        <button class="hide-control-btn" type="button" onclick="hideFloatingBot()">HIDE</button>
+    </div>
+
+    <!-- Laser Scanning Screen -->
+    <div class="scan-overlay-screen" id="scanOverlay">
+        <div class="scan-laser-line"></div>
+        <div class="scan-hud-box" id="hudStatusText">Scanning Market...</div>
+    </div>
+
+    <!-- Result Toast Box -->
+    <div class="result-toast-box" id="resultToast">
+        <div class="result-title">TradeX Signal Result</div>
+        <div class="result-badge" id="resultDirectionText">UP (CALL)</div>
+    </div>
+
+    <script>
+        const DEFAULT_ACCESS_KEY = "TRADEX-PRO-2026";
+
+        const EXACT_BOOKMARK_CODE = "javascript:(function(){if(document.getElementById('tradex-root')){var e=document.getElementById('tradex-root');e.style.display=e.style.display==='none'?'block':'none';return;}var s=document.createElement('style');s.textContent='#tradex-root{position:fixed;top:100px;left:20px;z-index:2147483647;user-select:none;-webkit-tap-highlight-color:transparent;}.tx-btn{width:66px;height:66px;border-radius:50%;border:3px solid #00ff66;background:radial-gradient(circle,#2e1065,#0f0720);box-shadow:0 0 25px #00ff66,inset 0 0 10px #a855f7;display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;animation:txP 2s infinite ease-in-out;touch-action:none;}.tx-btn img{width:100%;height:100%;object-fit:cover;pointer-events:none;}@keyframes txP{0%,100%{transform:scale(1);box-shadow:0 0 14px #00ff66;}50%{transform:scale(1.05);box-shadow:0 0 28px #00ff66;}}.tx-hide{margin-top:4px;background:#dc2626;color:#fff;border:1px solid #ff3366;border-radius:6px;padding:2px 7px;font-size:9px;font-weight:bold;cursor:pointer;display:block;margin-left:auto;margin-right:auto;}.tx-scan{position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:2147483640;background:rgba(10,4,25,0.5);display:none;pointer-events:none;}.tx-laser{position:absolute;width:100%;height:4px;background:linear-gradient(90deg,transparent,#a855f7,#00ff66,#a855f7,transparent);box-shadow:0 0 15px #00ff66;animation:txS 1.2s infinite alternate ease-in-out;}@keyframes txS{0%{top:0%;}100%{top:100%;}}.tx-hud{position:absolute;bottom:60px;left:50%;transform:translateX(-50%);background:rgba(15,8,28,0.95);border:1.5px solid #a855f7;padding:10px 20px;border-radius:25px;color:#c084fc;font-size:12px;font-weight:bold;text-align:center;box-shadow:0 0 20px rgba(168,85,247,0.7);}.tx-res{position:fixed;top:40%;left:50%;transform:translate(-50%,-50%);z-index:2147483646;background:rgba(10,4,25,0.96);border-radius:18px;padding:18px 28px;text-align:center;display:none;flex-direction:column;gap:6px;box-shadow:0 0 35px #000;}.tx-up{border:2px solid #00ff66;color:#00ff66;box-shadow:0 0 30px rgba(0,255,102,0.6);}.tx-down{border:2px solid #ff3366;color:#ff3366;box-shadow:0 0 30px rgba(255,51,102,0.6);}';document.head.appendChild(s);var r=document.createElement('div');r.id='tradex-root';var b=document.createElement('div');b.className='tx-btn';var im=document.createElement('img');im.src='https://i.ibb.co/7xfp9wPc/file-0000000034a882118c784129da56f6ed.png';b.appendChild(im);var h=document.createElement('button');h.className='tx-hide';h.innerText='HIDE';r.appendChild(b);r.appendChild(h);var sc=document.createElement('div');sc.className='tx-scan';var ls=document.createElement('div');ls.className='tx-laser';var hd=document.createElement('div');hd.className='tx-hud';hd.innerText='Scanning Market...';sc.appendChild(ls);sc.appendChild(hd);var rs=document.createElement('div');rs.className='tx-res';var rT=document.createElement('div');rT.style.fontSize='11px';rT.style.color='#d8b4fe';rT.innerText='TradeX Signal Result';var rB=document.createElement('div');rB.style.fontSize='20px';rB.style.fontWeight='900';rs.appendChild(rT);rs.appendChild(rB);document.body.appendChild(sc);document.body.appendChild(rs);document.body.appendChild(r);var dr=false,sx,sy,ix,iy;b.onpointerdown=function(e){dr=false;sx=e.clientX;sy=e.clientY;ix=r.offsetLeft;iy=r.offsetTop;b.setPointerCapture(e.pointerId);};b.onpointermove=function(e){if(Math.abs(e.clientX-sx)>3||Math.abs(e.clientY-sy)>3){dr=true;r.style.left=(ix+e.clientX-sx)+'px';r.style.top=(iy+e.clientY-sy)+'px';}};b.onpointerup=function(){setTimeout(function(){dr=false;},50);};function spk(t,cb){if('speechSynthesis' in window){window.speechSynthesis.cancel();var m=new SpeechSynthesisUtterance(t);m.lang='bn-BD';m.pitch=1.25;m.rate=0.95;var d=false;var c=function(){if(!d){d=true;if(cb)cb();}};m.onend=c;m.onerror=c;setTimeout(c,2500);window.speechSynthesis.speak(m);}else if(cb){cb();}}var anz=false;b.onclick=function(){if(dr||anz)return;anz=true;spk('আমি মার্কেট এনালাইসিস করছি, একটু অপেক্ষা করুন।',function(){sc.style.display='block';var st=['Checking Support & Resistance...','Validating Break of Structure (BOS)...','Scanning Fair Value Gap (FVG)...','Detecting Rejection Zone...','Analyzing Buyer & Seller Pressure...'],i=0;var tm=setInterval(function(){if(i<st.length){hd.innerText=st[i];i++;}else{clearInterval(tm);sc.style.display='none';setTimeout(function(){var up=Math.random()>0.35;rs.className='tx-res '+(up?'tx-up':'tx-down');rs.style.display='flex';rB.innerText=up?'⬆ UP (CALL)':'⬇ DOWN (PUT)';if(up){spk('এই ক্যান্ডেলে আপের দিকে এন্ট্রি নিতে পারেন।');}else{spk('এই ক্যান্ডেলে ডাউনের দিকে এন্ট্রি নিতে পারেন।');}setTimeout(function(){rs.style.display='none';anz=false;},3000);},500);}},1300);});};h.onclick=function(){r.style.display='none';spk('বট হাইড করা হয়েছে।');};spk('ট্রেড এক্স অটো বট সক্রিয় হয়েছে।');})();";
+
+        document.getElementById("bookmarkCodeText").value = EXACT_BOOKMARK_CODE;
+
+        let isKeyValid = false;
+        let isDragging = false;
+        let startX, startY, initialX, initialY;
+        let isAnalyzing = false;
+
+        const floatingWin = document.getElementById("floatingBotWindow");
+        const draggableLogo = document.getElementById("draggableLogo");
+
+        draggableLogo.addEventListener('pointerdown', (e) => {
+            isDragging = false;
+            startX = e.clientX;
+            startY = e.clientY;
+            initialX = floatingWin.offsetLeft;
+            initialY = floatingWin.offsetTop;
+            draggableLogo.setPointerCapture(e.pointerId);
+        });
+
+        draggableLogo.addEventListener('pointermove', (e) => {
+            let dx = e.clientX - startX;
+            let dy = e.clientY - startY;
+            if (Math.abs(dx) > 3 || Math.abs(dy) > 3) {
+                isDragging = true;
+                floatingWin.style.left = (initialX + dx) + 'px';
+                floatingWin.style.top = (initialY + dy) + 'px';
+            }
+        });
+
+        draggableLogo.addEventListener('pointerup', () => {
+            setTimeout(() => { isDragging = false; }, 50);
+        });
+
+        function speakAI(text, callback) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                let msg = new SpeechSynthesisUtterance(text);
+                msg.lang = 'bn-BD';
+                msg.pitch = 1.25;
+                msg.rate = 0.95;
+                let called = false;
+                const done = () => {
+                    if (!called) {
+                        called = true;
+                        if (callback) callback();
+                    }
+                };
+                msg.onend = done;
+                msg.onerror = done;
+                setTimeout(done, 2500);
+                window.speechSynthesis.speak(msg);
+            } else if (callback) { callback(); }
+        }
+
+        function verifyAccessKey() {
+            const inputKey = document.getElementById("accessKeyInput").value.trim();
+
+            if (inputKey === DEFAULT_ACCESS_KEY) {
+                isKeyValid = true;
+                document.getElementById("btnVerify").style.display = "none";
+                document.getElementById("btnBookmarkCode").style.display = "block";
+                speakAI("ওয়েলকাম টু ট্রেড এক্স অটো বট।");
+            } else {
+                document.getElementById("wrongKeyMessage").innerHTML = "আপনার পাসওয়ার্ডটি সঠিক নয়!<br>সঠিক পাসওয়ার্ডের জন্য এডমিনের সঙ্গে সরাসরি যোগাযোগ করুন।";
+                speakAI("আপনার পাসওয়ার্ডটি সঠিক নয়, সঠিক পাসওয়ার্ডের জন্য এডমিনের সঙ্গে যোগাযোগ করুন।");
+                document.getElementById("wrongKeyModal").style.display = "flex";
+            }
+        }
+
+        document.getElementById("accessKeyInput").addEventListener("keydown", (e) => {
+            if (e.key === "Enter") verifyAccessKey();
+        });
+
+        function closeWrongKeyModal() {
+            document.getElementById("wrongKeyModal").style.display = "none";
+        }
+
+        function openBookmarkModal() {
+            document.getElementById("bookmarkModal").style.display = "flex";
+        }
+
+        function closeBookmarkModal() {
+            document.getElementById("bookmarkModal").style.display = "none";
+        }
+
+        function copyBookmarkletCode() {
+            const btn = document.getElementById("btnCopyBookmark");
+            navigator.clipboard.writeText(EXACT_BOOKMARK_CODE).then(() => {
+                btn.innerText = "✅ Copied to Clipboard!";
+                setTimeout(() => {
+                    btn.innerText = "📋 Copy Bookmarklet Code";
+                }, 2500);
+            });
+        }
+
+        function hideFloatingBot() {
+            floatingWin.style.display = "none";
+            document.getElementById("appMainCard").style.display = "flex";
+            speakAI("বট হাইড করা হয়েছে।");
+        }
+
+        draggableLogo.onclick = function() {
+            if (isDragging || isAnalyzing) return;
+            isAnalyzing = true;
+
+            const overlay = document.getElementById("scanOverlay");
+            const hud = document.getElementById("hudStatusText");
+
+            speakAI("আমি মার্কেট এনালাইসিস করছি, একটু অপেক্ষা করুন।", function() {
+                overlay.classList.add("active");
+                
+                const concepts = [
+                    'Checking Support & Resistance...',
+                    'Validating Break of Structure (BOS)...',
+                    'Scanning Fair Value Gap (FVG)...',
+                    'Detecting Rejection Zone...',
+                    'Analyzing Buyer & Seller Pressure...'
+                ];
+
+                let step = 0;
+                const scanTimer = setInterval(() => {
+                    if (step < concepts.length) {
+                        hud.innerText = concepts[step];
+                        step++;
+                    } else {
+                        clearInterval(scanTimer);
+                        overlay.classList.remove("active");
+
+                        setTimeout(() => {
+                            const isUp = Math.random() > 0.35;
+                            showFloatingResult(isUp);
+
+                            if (isUp) {
+                                speakAI("এই ক্যান্ডেলে আপের দিকে এন্ট্রি নিতে পারেন।");
+                            } else {
+                                speakAI("এই ক্যান্ডেলে ডাউনের দিকে এন্ট্রি নিতে পারেন।");
+                            }
+                            isAnalyzing = false;
+                        }, 2500);
+                    }
+                }, 1400);
+            });
+        };
+
+        function showFloatingResult(isUp) {
+            const toast = document.getElementById("resultToast");
+            const text = document.getElementById("resultDirectionText");
+
+            if (isUp) {
+                toast.className = "result-toast-box result-up show";
+                text.innerText = "⬆ UP (CALL)";
+                text.className = "result-badge up-text";
+            } else {
+                toast.className = "result-toast-box result-down show";
+                text.innerText = "⬇ DOWN (PUT)";
+                text.className = "result-badge down-text";
+            }
+
+            setTimeout(() => {
+                toast.classList.remove("show");
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
